@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Gallery - Task 1</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 2.5em;
+      margin: 20px 0;
+      color: #333;
+    }
+
+    .filter-buttons {
+      margin-bottom: 20px;
+    }
+
+    .filter-buttons button {
+      margin: 5px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .filter-buttons button:hover {
+      background-color: #555;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .gallery-item {
+      width: 250px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 1000;
+    }
+
+    .lightbox-content {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .nav .prev, .nav .next {
+      font-size: 30px;
+      color: white;
+      background-color: rgba(255,255,255,0.2);
+      padding: 10px 20px;
+      margin: 0 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .nav .prev:hover,
+    .nav .next:hover {
+      background-color: rgba(255,255,255,0.4);
+    }
+
+    @media(max-width: 600px) {
+      .gallery-item {
+        width: 90%;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="title">My Image Gallery</h1>
+
+  <div class="filter-buttons">
+    <button onclick="filterImages('all')">All</button>
+    <button onclick="filterImages('nature')">Nature</button>
+    <button onclick="filterImages('animals')">Animals</button>
+    <button onclick="filterImages('Travles')">Travles</button>
+  </div>
+
+  <div class="gallery">
+    <img src="images/nature-1.jpg" class="gallery-item nature" onclick="openLightbox(this)">
+    <img src="images/animals-1.jpg" class="gallery-item animals" onclick="openLightbox(this)">
+    <img src="images/travles-3.JPG" class="gallery-item Travles" onclick="openLightbox(this)">
+    <img src="images/nature-2.jpg" class="gallery-item nature" onclick="openLightbox(this)">
+  <img src="images/travles-2.JPG" class="gallery-item Travles" onclick="openLightbox(this)">
+    <img src="images/animals-2.jpg" class="gallery-item animals" onclick="openLightbox(this)">
+     <img src="images/nature-3.jpg" class="gallery-item nature" onclick="openLightbox(this)">
+      <img src="images/travles-1.JPG" class="gallery-item Travles" onclick="openLightbox(this)">
+      <img src="images/animals-3.jpg" class="gallery-item animals" onclick="openLightbox(this)">
+<img src="images/nature-4.jpg" class="gallery-item nature" onclick="openLightbox(this)">
+
+  </div>
+
+  <!-- Lightbox View -->
+  <div class="lightbox" id="lightbox">
+    <span class="close" onclick="closeLightbox()">×</span>
+    <img class="lightbox-content" id="lightbox-img" />
+    <div class="nav">
+      <span class="prev" onclick="changeImage(-1)">❮ Prev</span>
+      <span class="next" onclick="changeImage(1)">Next ❯</span>
+    </div>
+  </div>
+
+  <script>
+    let currentImageIndex = 0;
+    let images = [];
+
+    function openLightbox(element) {
+      images = Array.from(document.querySelectorAll('.gallery-item'));
+      currentImageIndex = images.indexOf(element);
+      document.getElementById('lightbox-img').src = element.src;
+      document.getElementById('lightbox').style.display = 'flex';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').style.display = 'none';
+    }
+
+    function changeImage(direction) {
+      currentImageIndex += direction;
+      if (currentImageIndex < 0) currentImageIndex = images.length - 1;
+      if (currentImageIndex >= images.length) currentImageIndex = 0;
+      document.getElementById('lightbox-img').src = images[currentImageIndex].src;
+    }
+
+    function filterImages(category) {
+      const allImages = document.querySelectorAll('.gallery-item');
+      allImages.forEach(img => {
+        if (category === 'all' || img.classList.contains(category)) {
+          img.style.display = 'inline';
+        } else {
+          img.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
